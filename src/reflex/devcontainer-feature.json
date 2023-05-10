@@ -1,0 +1,16 @@
+{
+    "name": "reflex",
+    "id": "reflex",
+    "version": "0.1.0",
+    "description": "Reflex is a small tool to watch a directory and rerun a command when certain files change.",
+    "options": {
+        "version": {
+            "type": "string",
+            "proposals": [
+                "latest"
+            ],
+            "default": "latest",
+            "description": "Select or enter a version."
+        }
+    }
+}
