@@ -2,7 +2,7 @@
 
 'Features' are self-contained units of installation code and development container configuration. Features are designed to install atop a wide-range of base container images.
 
-### `reflex`(https://github.com/brokeyourbike/devcontainer-features/blob/main/src/reflex/README.md)
+### `reflex`
 
 ```jsonc
 {
