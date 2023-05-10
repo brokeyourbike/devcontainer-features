@@ -2,9 +2,7 @@
 
 'Features' are self-contained units of installation code and development container configuration. Features are designed to install atop a wide-range of base container images.
 
-### `reflex`
-
-Reflex is a small tool to watch a directory and rerun a command when certain files change.
+### `reflex`(https://github.com/brokeyourbike/devcontainer-features/blob/main/src/reflex/README.md)
 
 ```jsonc
 {
