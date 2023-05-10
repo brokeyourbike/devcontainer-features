@@ -19,7 +19,7 @@ if [ "${os}" != "linux" ] && [ "${os}" != "darwin" ] ; then
 fi
 
 architecture="$(uname -m)"
-if [ "${architecture}" != "amd64" ] && [ "${architecture}" != "x86_64" ] && [ "${architecture}" != "arm64" ]; then
+if [ "${architecture}" != "amd64" ] && [ "${architecture}" != "x86_64" ] && [ "${architecture}" != "arm64" ] && [ "${architecture}" != "aarch64" ]; then
     echo "(!) Architecture $architecture unsupported"
     exit 1
 fi
@@ -50,7 +50,7 @@ fi
 
 echo "Installing reflex..."
 
-if [ "$(uname -m)" == "arm64" ]; then
+if [ "${architecture}" == "arm64" ] || [ "${architecture}" == "aarch64" ]; then
     arch="arm64"
 else
     arch="amd64"
