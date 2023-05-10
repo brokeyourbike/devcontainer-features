@@ -6,7 +6,7 @@ set -e
 source dev-container-features-test-lib
 
 # Definition specific tests
-check "help" reflex -h
+check "help" reflex -h 2>&1 >/dev/null | grep 'Usage: reflex'
 
 # Report result
 reportResults
