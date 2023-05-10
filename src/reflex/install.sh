@@ -12,8 +12,14 @@ if [ "$(id -u)" -ne 0 ]; then
     exit 1
 fi
 
+os=$(uname -s | tr '[:upper:]' '[:lower:]')
+if [ "${os}" != "linux" ] && [ "${os}" != "darwin" ] ; then
+    echo "(!) OS ${os} unsupported"
+    exit 1
+fi
+
 architecture="$(uname -m)"
-if [ "${architecture}" != "amd64" ] && [ "${architecture}" != "arm64" ]; then
+if [ "${architecture}" != "amd64" ] && [ "${architecture}" != "x86_64" ] && [ "${architecture}" != "arm64" ]; then
     echo "(!) Architecture $architecture unsupported"
     exit 1
 fi
@@ -44,10 +50,16 @@ fi
 
 echo "Installing reflex..."
 
-curl -fsSLO --compressed "https://github.com/cespare/reflex/releases/download/v${VERSION}/reflex_linux_${architecture}.tar.gz"
-tar -xzf "reflex_linux_${architecture}.tar.gz"
-mv "reflex_linux_${architecture}/reflex" /usr/local/bin/reflex
-rm -rf "reflex_linux_${architecture}.tar.gz" "reflex_linux_${architecture}"
+if [ "$(uname -m)" == "arm64" ]; then
+    arch="arm64"
+else
+    arch="amd64"
+fi
+
+curl -fsSLO --compressed "https://github.com/cespare/reflex/releases/download/v${VERSION}/reflex_${os}_${arch}.tar.gz"
+tar -xzf "reflex_${os}_${arch}.tar.gz"
+mv "reflex_${os}_${arch}/reflex" /usr/local/bin/reflex
+rm -rf "reflex_${os}_${arch}.tar.gz" "reflex_${os}_${arch}"
 
 # clean up
 rm -rf /var/lib/apt/lists/*
