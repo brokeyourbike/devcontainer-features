@@ -13,7 +13,7 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 architecture="$(uname -m)"
-if [ "${architecture}" != "amd64" ] && [ "${architecture}" != "arm64" ] ]; then
+if [ "${architecture}" != "amd64" ] && [ "${architecture}" != "arm64" ]; then
     echo "(!) Architecture $architecture unsupported"
     exit 1
 fi
@@ -44,10 +44,10 @@ fi
 
 echo "Installing reflex..."
 
-curl -fsSLO --compressed "https://github.com/cespare/reflex/releases/download/v${VERSION}/reflex_linux_${arch}.tar.gz"
-tar -xzf "reflex_linux_${arch}.tar.gz"
-mv "reflex_linux_${arch}/reflex" /usr/local/bin/reflex
-rm -rf "reflex_linux_${arch}.tar.gz" "reflex_linux_${arch}"
+curl -fsSLO --compressed "https://github.com/cespare/reflex/releases/download/v${VERSION}/reflex_linux_${architecture}.tar.gz"
+tar -xzf "reflex_linux_${architecture}.tar.gz"
+mv "reflex_linux_${architecture}/reflex" /usr/local/bin/reflex
+rm -rf "reflex_linux_${architecture}.tar.gz" "reflex_linux_${architecture}"
 
 # clean up
 rm -rf /var/lib/apt/lists/*
