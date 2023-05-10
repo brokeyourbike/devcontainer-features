@@ -4,6 +4,8 @@
 
 ### `reflex`
 
+Reflex is a small tool to watch a directory and rerun a command when certain files change.
+
 ```jsonc
 {
     "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
