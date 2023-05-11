@@ -1,5 +1,5 @@
 {
-    "name": "staticcheck",
+    "name": "Staticcheck",
     "id": "staticcheck",
     "version": "0.1.0",
     "description": "Staticcheck is a state of the art linter for the Go programming language.",
