@@ -57,7 +57,10 @@ if ! mockery --version &> /dev/null ; then
         arch="x86_64"
     fi
 
-    curl -fsSLO --compressed "https://github.com/vektra/mockery/releases/download/v${VERSION}/mockery_${VERSION}_${os}_${arch}.tar.gz"
+    url="https://github.com/vektra/mockery/releases/download/v${VERSION}/mockery_${VERSION}_${os}_${arch}.tar.gz"
+    echo "Downloading from: ${url}"
+
+    curl -fsSLO --compressed "${url}"
     tar -xzf "mockery_${VERSION}_${os}_${arch}.tar.gz"
     mv mockery /usr/local/bin/mockery
     rm -rf "mockery_${VERSION}_${os}_${arch}.tar.gz"

@@ -57,7 +57,10 @@ if ! staticcheck -version &> /dev/null ; then
         arch="amd64"
     fi
 
-    curl -fsSLO --compressed "https://github.com/dominikh/go-tools/releases/download/${VERSION}/staticcheck_${os}_${arch}.tar.gz"
+    url="https://github.com/dominikh/go-tools/releases/download/${VERSION}/staticcheck_${os}_${arch}.tar.gz"
+    echo "Downloading from: ${url}"
+
+    curl -fsSLO --compressed "${url}"
     tar -xzf "staticcheck_${os}_${arch}.tar.gz"
     mv staticcheck/staticcheck /usr/local/bin/staticcheck
     rm -rf "staticcheck_${os}_${arch}.tar.gz" staticcheck

@@ -57,7 +57,10 @@ if ! reflex -h 2>&1 >/dev/null | grep 'Usage: reflex' &> /dev/nul ; then
         arch="amd64"
     fi
 
-    curl -fsSLO --compressed "https://github.com/cespare/reflex/releases/download/v${VERSION}/reflex_${os}_${arch}.tar.gz"
+    url="https://github.com/cespare/reflex/releases/download/v${VERSION}/reflex_${os}_${arch}.tar.gz"
+    echo "Downloading from: ${url}"
+
+    curl -fsSLO --compressed "${url}"
     tar -xzf "reflex_${os}_${arch}.tar.gz"
     mv "reflex_${os}_${arch}/reflex" /usr/local/bin/reflex
     rm -rf "reflex_${os}_${arch}.tar.gz" "reflex_${os}_${arch}"
