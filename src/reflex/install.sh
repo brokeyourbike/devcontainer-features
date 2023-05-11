@@ -48,18 +48,22 @@ if [ "${VERSION}" = "latest" ] || [ "${VERSION}" = "lts" ]; then
     export VERSION=$(curl -s https://api.github.com/repos/cespare/reflex/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4)}')
 fi
 
-echo "Installing reflex..."
+if ! reflex -h 2>&1 >/dev/null | grep 'Usage: reflex' &> /dev/nul ; then
+    echo "Installing reflex v${VERSION}..."
 
-if [ "${architecture}" == "arm64" ] || [ "${architecture}" == "aarch64" ]; then
-    arch="arm64"
+    if [ "${architecture}" == "arm64" ] || [ "${architecture}" == "aarch64" ]; then
+        arch="arm64"
+    else
+        arch="amd64"
+    fi
+
+    curl -fsSLO --compressed "https://github.com/cespare/reflex/releases/download/v${VERSION}/reflex_${os}_${arch}.tar.gz"
+    tar -xzf "reflex_${os}_${arch}.tar.gz"
+    mv "reflex_${os}_${arch}/reflex" /usr/local/bin/reflex
+    rm -rf "reflex_${os}_${arch}.tar.gz" "reflex_${os}_${arch}"
 else
-    arch="amd64"
+    echo "reflex already installed"
 fi
-
-curl -fsSLO --compressed "https://github.com/cespare/reflex/releases/download/v${VERSION}/reflex_${os}_${arch}.tar.gz"
-tar -xzf "reflex_${os}_${arch}.tar.gz"
-mv "reflex_${os}_${arch}/reflex" /usr/local/bin/reflex
-rm -rf "reflex_${os}_${arch}.tar.gz" "reflex_${os}_${arch}"
 
 # clean up
 rm -rf /var/lib/apt/lists/*
