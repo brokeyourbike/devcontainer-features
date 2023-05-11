@@ -45,7 +45,7 @@ check_packages curl ca-certificates tar
 
 # fetch latest version of staticcheck if needed
 if [ "${VERSION}" = "latest" ] || [ "${VERSION}" = "lts" ]; then
-    export VERSION=$(curl -s https://api.github.com/repos/dominikh/go-tools/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4)}')
+    export VERSION=$(curl -s https://api.github.com/repos/dominikh/go-tools/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3)}')
 fi
 
 if ! staticcheck -version &> /dev/null ; then
@@ -57,7 +57,7 @@ if ! staticcheck -version &> /dev/null ; then
         arch="amd64"
     fi
 
-    curl -fsSLO --compressed "https://github.com/dominikh/go-tools/releases/download/v${VERSION}/staticcheck_${os}_${arch}.tar.gz"
+    curl -fsSLO --compressed "https://github.com/dominikh/go-tools/releases/download/${VERSION}/staticcheck_${os}_${arch}.tar.gz"
     tar -xzf "staticcheck_${os}_${arch}.tar.gz"
     mv staticcheck/staticcheck /usr/local/bin/staticcheck
     rm -rf "staticcheck_${os}_${arch}.tar.gz" staticcheck
