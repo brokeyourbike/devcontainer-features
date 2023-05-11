@@ -15,6 +15,7 @@ jobs:
         features:
           - reflex
           - staticcheck
+          - mockery-go
         baseImage:
           - debian:latest
           - ubuntu:latest

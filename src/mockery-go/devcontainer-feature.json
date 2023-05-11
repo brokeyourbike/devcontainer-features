@@ -1,0 +1,16 @@
+{
+    "name": "mockery (Go)",
+    "id": "mockery-go",
+    "version": "0.1.0",
+    "description": "A mock code autogenerator for Golang.",
+    "options": {
+        "version": {
+            "type": "string",
+            "proposals": [
+                "latest"
+            ],
+            "default": "latest",
+            "description": "Select or enter a version."
+        }
+    }
+}
