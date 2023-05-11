@@ -1,6 +1,7 @@
 # Development Container Features
 
 [![tests](https://github.com/brokeyourbike/devcontainer-features/actions/workflows/test.yaml/badge.svg)](https://github.com/brokeyourbike/devcontainer-features/actions/workflows/test.yaml)
+[![lint](https://github.com/brokeyourbike/devcontainer-features/actions/workflows/lint.yml/badge.svg)](https://github.com/brokeyourbike/devcontainer-features/actions/workflows/lint.yml)
 
 'Features' are self-contained units of installation code and development container configuration. Features are designed to install atop a wide-range of base container images.
 
