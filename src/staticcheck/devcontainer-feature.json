@@ -1,0 +1,16 @@
+{
+    "name": "staticcheck",
+    "id": "staticcheck",
+    "version": "0.1.0",
+    "description": "Staticcheck is a state of the art linter for the Go programming language.",
+    "options": {
+        "version": {
+            "type": "string",
+            "proposals": [
+                "latest"
+            ],
+            "default": "latest",
+            "description": "Select or enter a version."
+        }
+    }
+}
