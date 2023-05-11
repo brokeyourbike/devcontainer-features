@@ -26,6 +26,17 @@
 }
 ```
 
+### `mockery-go`
+
+```jsonc
+{
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+        "ghcr.io/brokeyourbike/devcontainer-features/mockery-go:0": {}
+    }
+}
+```
+
 ## Authors
 - [Ivan Stasiuk](https://github.com/brokeyourbike) | [Twitter](https://twitter.com/brokeyourbike) | [LinkedIn](https://www.linkedin.com/in/brokeyourbike) | [stasi.uk](https://stasi.uk)
 
