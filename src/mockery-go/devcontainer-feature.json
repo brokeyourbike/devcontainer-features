@@ -1,7 +1,7 @@
 {
     "name": "mockery (Go)",
     "id": "mockery-go",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "A mock code autogenerator for Golang.",
     "options": {
         "version": {
