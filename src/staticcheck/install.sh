@@ -41,7 +41,7 @@ check_packages() {
 }
 
 # install dependencies
-check_packages curl ca-certificates tar
+check_packages curl ca-certificates tar jq
 
 # fetch latest version of staticcheck if needed
 if [ "${VERSION}" = "latest" ] || [ "${VERSION}" = "lts" ]; then
