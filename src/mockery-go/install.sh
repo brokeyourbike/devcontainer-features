@@ -12,9 +12,8 @@ if [ "$(id -u)" -ne 0 ]; then
     exit 1
 fi
 
-os=$(uname -s)
-if [ "${os}" != "Linux" ] && [ "${os}" != "Darwin" ] ; then
-    echo "(!) OS ${os} unsupported"
+if [ "$(uname -s)" != "Linux" ] ; then
+    echo "(!) OS $(uname -s) unsupported."
     exit 1
 fi
 
@@ -45,7 +44,7 @@ check_packages curl ca-certificates tar jq
 
 # fetch latest version of mockery if needed
 if [ "${VERSION}" = "latest" ] || [ "${VERSION}" = "lts" ]; then
-    tag=$(curl -s --retry 3 https://api.github.com/repos/vektra/mockery/releases/latest | jq -r .tag_name)
+    tag=$(curl -s https://api.github.com/repos/vektra/mockery/releases/latest | jq -r .tag_name)
     export VERSION="${tag:1}"
 fi
 
@@ -58,13 +57,23 @@ if ! mockery --version &> /dev/null ; then
         arch="x86_64"
     fi
 
-    url="https://github.com/vektra/mockery/releases/download/v${VERSION}/mockery_${VERSION}_${os}_${arch}.tar.gz"
-    echo "Downloading from: ${url}"
+    tar_file="mockery_${VERSION}_Linux_${arch}.tar.gz"
+    checksum_file="checksum.txt"
 
-    curl -fsSLO --compressed "${url}"
-    tar -xzf "mockery_${VERSION}_${os}_${arch}.tar.gz"
+    curl -fsSLO --compressed "https://github.com/vektra/mockery/releases/download/v${VERSION}/${tar_file}"
+    curl -fsSLO "https://github.com/vektra/mockery/releases/download/v${VERSION}/${checksum_file}"
+
+    actual_checksum=$(sha256sum "${tar_file}" | awk '{ print $1 }')
+    stored_checksum=$(grep "${tar_file}" "${checksum_file}" | awk '{ print $1 }')
+
+    if [ "${actual_checksum}" != "${stored_checksum}" ]; then
+        echo "(!) The tarball is NOT valid."
+        exit 1
+    fi
+
+    tar -xzf "${tar_file}"
     mv mockery /usr/local/bin/mockery
-    rm -rf "mockery_${VERSION}_${os}_${arch}.tar.gz"
+    rm -rf "${tar_file}" "${checksum_file}"
 else
     echo "mockery already installed"
 fi

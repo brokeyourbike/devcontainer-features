@@ -12,15 +12,14 @@ if [ "$(id -u)" -ne 0 ]; then
     exit 1
 fi
 
-os=$(uname -s | tr '[:upper:]' '[:lower:]')
-if [ "${os}" != "linux" ] && [ "${os}" != "darwin" ] ; then
-    echo "(!) OS ${os} unsupported"
+if [ "$(uname -s)" != "Linux" ] ; then
+    echo "(!) OS $(uname -s) unsupported."
     exit 1
 fi
 
 architecture="$(uname -m)"
 if [ "${architecture}" != "amd64" ] && [ "${architecture}" != "x86_64" ] && [ "${architecture}" != "arm64" ] && [ "${architecture}" != "aarch64" ]; then
-    echo "(!) Architecture $architecture unsupported"
+    echo "(!) Architecture $architecture unsupported."
     exit 1
 fi
 
@@ -40,22 +39,12 @@ check_packages() {
     fi
 }
 
-# compute the SHA256 hash of a file
-compute_sha256() {
-    FILE=$1
-    if [ "$(uname)" = "Darwin" ]; then
-        shasum -a 256 $FILE | awk '{ print $1 }'
-    else
-        sha256sum $FILE | awk '{ print $1 }'
-    fi
-}
-
 # install dependencies
 check_packages curl ca-certificates tar jq
 
 # fetch latest version of reflex if needed
 if [ "${VERSION}" = "latest" ] || [ "${VERSION}" = "lts" ]; then
-    tag=$(curl -s --retry 3 https://api.github.com/repos/cespare/reflex/releases/latest | jq -r .tag_name)
+    tag=$(curl -s https://api.github.com/repos/cespare/reflex/releases/latest | jq -r .tag_name)
     export VERSION="${tag:1}"
 fi
 
@@ -68,23 +57,23 @@ if ! reflex -h 2>&1 >/dev/null | grep 'Usage: reflex' &> /dev/nul ; then
         arch="amd64"
     fi
 
-    TARFILE="reflex_${os}_${arch}.tar.gz"
-    SHAFILE="${TARFILE}.sha256"
+    tar_file="reflex_linux_${arch}.tar.gz"
+    sha_file="${tar_file}.sha256"
 
-    curl -fsSLO --compressed "https://github.com/cespare/reflex/releases/download/v${VERSION}/${TARFILE}"
-    curl -fsSLO "https://github.com/cespare/reflex/releases/download/v${VERSION}/${SHAFILE}"
+    curl -fsSLO --compressed "https://github.com/cespare/reflex/releases/download/v${VERSION}/${tar_file}"
+    curl -fsSLO "https://github.com/cespare/reflex/releases/download/v${VERSION}/${sha_file}"
 
-    ACTUAL_SHA=$(compute_sha256 $TARFILE)
-    EXPECTED_SHA=$(awk '{ print $1 }' $SHAFILE)
+    actual_sha=$(sha256sum "${tar_file}" | awk '{ print $1 }')
+    expected_sha=$(awk '{ print $1 }' "${sha_file}")
 
-    if [ "$ACTUAL_SHA" != "$EXPECTED_SHA" ]; then
-        echo "The tarball is NOT valid."
+    if [ "$actual_sha" != "$expected_sha" ]; then
+        echo "(!) The tarball is NOT valid."
         exit 1
     fi
 
-    tar -xzf "${TARFILE}"
-    mv "reflex_${os}_${arch}/reflex" /usr/local/bin/reflex
-    rm -rf "${TARFILE}" "${SHAFILE}" "reflex_${os}_${arch}"
+    tar -xzf "${tar_file}"
+    mv "reflex_linux_${arch}/reflex" /usr/local/bin/reflex
+    rm -rf "${tar_file}" "${sha_file}" "reflex_linux_${arch}"
 else
     echo "reflex already installed"
 fi

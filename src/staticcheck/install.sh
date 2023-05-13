@@ -12,9 +12,8 @@ if [ "$(id -u)" -ne 0 ]; then
     exit 1
 fi
 
-os=$(uname -s | tr '[:upper:]' '[:lower:]')
-if [ "${os}" != "linux" ] && [ "${os}" != "darwin" ] ; then
-    echo "(!) OS ${os} unsupported"
+if [ "$(uname -s)" != "Linux" ] ; then
+    echo "(!) OS $(uname -s) unsupported."
     exit 1
 fi
 
@@ -45,7 +44,7 @@ check_packages curl ca-certificates tar jq
 
 # fetch latest version of staticcheck if needed
 if [ "${VERSION}" = "latest" ] || [ "${VERSION}" = "lts" ]; then
-    export VERSION=$(curl -s --retry 3 https://api.github.com/repos/dominikh/go-tools/releases/latest | jq -r .tag_name)
+    export VERSION=$(curl -s https://api.github.com/repos/dominikh/go-tools/releases/latest | jq -r .tag_name)
 fi
 
 if ! staticcheck -version &> /dev/null ; then
@@ -57,13 +56,23 @@ if ! staticcheck -version &> /dev/null ; then
         arch="amd64"
     fi
 
-    url="https://github.com/dominikh/go-tools/releases/download/${VERSION}/staticcheck_${os}_${arch}.tar.gz"
-    echo "Downloading from: ${url}"
+    tar_file="staticcheck_linux_${arch}.tar.gz"
+    sha_file="${tar_file}.sha256"
 
-    curl -fsSLO --compressed "${url}"
-    tar -xzf "staticcheck_${os}_${arch}.tar.gz"
+    curl -fsSLO --compressed "https://github.com/dominikh/go-tools/releases/download/${VERSION}/${tar_file}"
+    curl -fsSLO "https://github.com/dominikh/go-tools/releases/download/${VERSION}/${sha_file}"
+
+    actual_sha=$(sha256sum "${tar_file}" | awk '{ print $1 }')
+    expected_sha=$(awk '{ print $1 }' "${sha_file}")
+
+    if [ "$actual_sha" != "$expected_sha" ]; then
+        echo "(!) The tarball is NOT valid."
+        exit 1
+    fi
+
+    tar -xzf "${tar_file}"
     mv staticcheck/staticcheck /usr/local/bin/staticcheck
-    rm -rf "staticcheck_${os}_${arch}.tar.gz" staticcheck
+    rm -rf "${tar_file}" "${sha_file}" staticcheck
 else
     echo "staticcheck already installed"
 fi
