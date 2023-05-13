@@ -45,7 +45,7 @@ check_packages curl ca-certificates tar jq
 
 # fetch latest version of mockery if needed
 if [ "${VERSION}" = "latest" ] || [ "${VERSION}" = "lts" ]; then
-    tag=$(curl -s https://api.github.com/repos/vektra/mockery/releases/latest | jq -r .tag_name)
+    tag=$(curl -s --retry 3 https://api.github.com/repos/vektra/mockery/releases/latest | jq -r .tag_name)
     export VERSION="${tag:1}"
 fi
 

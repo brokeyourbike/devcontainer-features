@@ -45,7 +45,7 @@ check_packages curl ca-certificates tar jq
 
 # fetch latest version of staticcheck if needed
 if [ "${VERSION}" = "latest" ] || [ "${VERSION}" = "lts" ]; then
-    export VERSION=$(curl -s https://api.github.com/repos/dominikh/go-tools/releases/latest | jq -r .tag_name)
+    export VERSION=$(curl -s --retry 3 https://api.github.com/repos/dominikh/go-tools/releases/latest | jq -r .tag_name)
 fi
 
 if ! staticcheck -version &> /dev/null ; then
