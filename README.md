@@ -8,8 +8,8 @@
 ## Features
 | Feature | Description |
 | - | - |
-| [reflex](https://github.com/brokeyourbike/devcontainer-features/blob/main/src/reflex/README.md) | Reflex is a small tool to watch a directory and rerun a command when certain files change. |
-| [staticcheck](https://github.com/brokeyourbike/devcontainer-features/blob/main/src/staticcheck/README.md) | Staticcheck is a state of the art linter for the Golang. |
+| [reflex](https://github.com/brokeyourbike/devcontainer-features/blob/main/src/reflex/README.md) | Small tool to watch a directory and rerun a command when certain files change. |
+| [staticcheck](https://github.com/brokeyourbike/devcontainer-features/blob/main/src/staticcheck/README.md) | State of the art linter for the Golang. |
 | [mockery-go](https://github.com/brokeyourbike/devcontainer-features/blob/main/src/mockery-go/README.md) | A mock code autogenerator for Golang. |
 
 ## Authors
