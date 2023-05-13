@@ -5,38 +5,12 @@
 
 'Features' are self-contained units of installation code and development container configuration. Features are designed to install atop a wide-range of base container images.
 
-### `reflex`
-
-```jsonc
-{
-    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-    "features": {
-        "ghcr.io/brokeyourbike/devcontainer-features/reflex:0": {}
-    }
-}
-```
-
-### `staticcheck`
-
-```jsonc
-{
-    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-    "features": {
-        "ghcr.io/brokeyourbike/devcontainer-features/staticcheck:0": {}
-    }
-}
-```
-
-### `mockery-go`
-
-```jsonc
-{
-    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-    "features": {
-        "ghcr.io/brokeyourbike/devcontainer-features/mockery-go:0": {}
-    }
-}
-```
+## Features
+| Feature | Description |
+| - | - |
+| [reflex](https://github.com/brokeyourbike/devcontainer-features/blob/main/src/reflex/README.md) | Reflex is a small tool to watch a directory and rerun a command when certain files change. |
+| [staticcheck](https://github.com/brokeyourbike/devcontainer-features/blob/main/src/staticcheck/README.md) | Staticcheck is a state of the art linter for the Golang. |
+| [mockery-go](https://github.com/brokeyourbike/devcontainer-features/blob/main/src/mockery-go/README.md) | A mock code autogenerator for Golang. |
 
 ## Authors
 - [Ivan Stasiuk](https://github.com/brokeyourbike) | [Twitter](https://twitter.com/brokeyourbike) | [LinkedIn](https://www.linkedin.com/in/brokeyourbike) | [stasi.uk](https://stasi.uk)

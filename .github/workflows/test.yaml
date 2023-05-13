@@ -17,9 +17,10 @@ jobs:
           - staticcheck
           - mockery-go
         baseImage:
-          - debian:latest
           - ubuntu:latest
+          - debian:latest
           - mcr.microsoft.com/devcontainers/base:ubuntu
+          - mcr.microsoft.com/devcontainers/base:debian
     steps:
       - uses: actions/checkout@v3
       - run: npm install -g @devcontainers/cli
