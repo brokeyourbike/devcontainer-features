@@ -24,15 +24,15 @@ if [ "${architecture}" != "amd64" ] && [ "${architecture}" != "x86_64" ] && [ "$
     exit 1
 fi
 
-apt_get_update()
-{
+# checks if apt-get update is needed, and runs it if so
+apt_get_update() {
     if [ "$(find /var/lib/apt/lists/* | wc -l)" = "0" ]; then
         echo "Running apt-get update..."
         apt-get update -y
     fi
 }
 
-# Checks if packages are installed and installs them if not
+# checks if packages are installed and installs them if not
 check_packages() {
     if ! dpkg -s "$@" > /dev/null 2>&1; then
         apt_get_update
@@ -58,13 +58,23 @@ if ! reflex -h 2>&1 >/dev/null | grep 'Usage: reflex' &> /dev/nul ; then
         arch="amd64"
     fi
 
-    url="https://github.com/cespare/reflex/releases/download/v${VERSION}/reflex_${os}_${arch}.tar.gz"
-    echo "Downloading from: ${url}"
+    TARFILE="reflex_${os}_${arch}.tar.gz"
+    SHAFILE="${TARFILE}.sha256"
 
-    curl -fsSLO --compressed "${url}"
-    tar -xzf "reflex_${os}_${arch}.tar.gz"
+    curl -fsSLO --compressed "https://github.com/cespare/reflex/releases/download/v${VERSION}/${TARFILE}"
+    curl -fsSLO "https://github.com/cespare/reflex/releases/download/v${VERSION}/${SHAFILE}"
+
+    ACTUAL_SHA=$(shasum -a 256 $TARFILE | awk '{ print $1 }')
+    EXPECTED_SHA=$(awk '{ print $1 }' $SHAFILE)
+
+    if [ "$ACTUAL_SHA" != "$EXPECTED_SHA" ]; then
+        echo "The tarball is NOT valid."
+        exit 1
+    fi
+
+    tar -xzf "${TARFILE}"
     mv "reflex_${os}_${arch}/reflex" /usr/local/bin/reflex
-    rm -rf "reflex_${os}_${arch}.tar.gz" "reflex_${os}_${arch}"
+    rm -rf "${TARFILE}" "${SHAFILE}" "reflex_${os}_${arch}"
 else
     echo "reflex already installed"
 fi
