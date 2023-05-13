@@ -24,15 +24,15 @@ if [ "${architecture}" != "amd64" ] && [ "${architecture}" != "x86_64" ] && [ "$
     exit 1
 fi
 
-apt_get_update()
-{
+# checks if apt-get update is needed, and runs it if so
+apt_get_update() {
     if [ "$(find /var/lib/apt/lists/* | wc -l)" = "0" ]; then
         echo "Running apt-get update..."
         apt-get update -y
     fi
 }
 
-# Checks if packages are installed and installs them if not
+# checks if packages are installed and installs them if not
 check_packages() {
     if ! dpkg -s "$@" > /dev/null 2>&1; then
         apt_get_update
