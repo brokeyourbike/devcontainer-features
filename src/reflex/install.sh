@@ -40,6 +40,16 @@ check_packages() {
     fi
 }
 
+# compute the SHA256 hash of a file
+compute_sha256() {
+    FILE=$1
+    if [ "$(uname)" = "Darwin" ]; then
+        shasum -a 256 $FILE | awk '{ print $1 }'
+    else
+        sha256sum $FILE | awk '{ print $1 }'
+    fi
+}
+
 # install dependencies
 check_packages curl ca-certificates tar jq
 
@@ -64,7 +74,7 @@ if ! reflex -h 2>&1 >/dev/null | grep 'Usage: reflex' &> /dev/nul ; then
     curl -fsSLO --compressed "https://github.com/cespare/reflex/releases/download/v${VERSION}/${TARFILE}"
     curl -fsSLO "https://github.com/cespare/reflex/releases/download/v${VERSION}/${SHAFILE}"
 
-    ACTUAL_SHA=$(shasum -a 256 $TARFILE | awk '{ print $1 }')
+    ACTUAL_SHA=$(compute_sha256 $TARFILE)
     EXPECTED_SHA=$(awk '{ print $1 }' $SHAFILE)
 
     if [ "$ACTUAL_SHA" != "$EXPECTED_SHA" ]; then
