@@ -45,7 +45,8 @@ check_packages curl ca-certificates tar
 
 # fetch latest version of reflex if needed
 if [ "${VERSION}" = "latest" ] || [ "${VERSION}" = "lts" ]; then
-    export VERSION=$(curl -s https://api.github.com/repos/cespare/reflex/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4)}')
+    tag=$(curl -s https://api.github.com/repos/cespare/reflex/releases/latest | jq -r .tag_name)
+    export VERSION="${tag:1}"
 fi
 
 if ! reflex -h 2>&1 >/dev/null | grep 'Usage: reflex' &> /dev/nul ; then
